@@ -16,7 +16,8 @@ public class Board extends JFrame {
 	private ArrayList<JButton> btns = new ArrayList<>();
 	private Content content = new Content();
 	
-	private Shape editShape;
+	private Shape editShape; // 选中的编辑中的图形
+	private Shape drawShape; // 绘制中图形 鼠标按下拖动未抬起
 	
 	public Board(int width,int height) {
 		this.setTitle("绘图板");
@@ -41,7 +42,7 @@ public class Board extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("按下了矩形");
-				
+				content.setState(1);
 			}
 		});
 		btns.add(btnRect);
