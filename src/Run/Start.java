@@ -1,9 +1,11 @@
 package Run;
 
+import Framework.Board;
+
 public class Start {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Board board = new Board(500,600);
 
 	}
 
