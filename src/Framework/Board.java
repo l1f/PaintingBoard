@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Shape.Rectangle;
 import Shape.Shape;
 
 public class Board extends JFrame {
@@ -42,6 +43,7 @@ public class Board extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("按下了矩形");
+				content.setDrawType("rectangle");
 				content.setState(1);
 			}
 		});

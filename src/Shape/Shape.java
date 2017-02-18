@@ -8,7 +8,7 @@ import Framework.Content;
 public abstract class Shape {
 	private Color color = new Color(0);
 	
-	public abstract void draw(Graphics g, Content c);
+	public abstract void draw(Graphics g);
 
 	public Color getColor() {
 		return color;

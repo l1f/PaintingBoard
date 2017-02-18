@@ -10,19 +10,30 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import Shape.Rectangle;
 import Shape.Shape;
 
 public class Content extends JPanel {
 	private Point startPoint,endPoint;
 	private int state; // 0 无操作 1 绘制中 2 选中编辑中
 	private ArrayList<Shape> shapes = new ArrayList<>();
+	private String drawType;
+	private int drawIndex = -1;
+	
+	public void setDrawType(String type){
+		drawType = type;
+	}
+	
+	private Content getThis(){ //供内部类中获取
+		return this;
+	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for ( Shape s : shapes )
 		{
-			s.draw(g,this);
+			s.draw(g);
 		}			
 	}
 	public int getState(){
@@ -38,6 +49,14 @@ public class Content extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				System.out.println("----released----");
+				if( state == 1){
+					Rectangle r = new Rectangle(getThis());
+					shapes.set(drawIndex, r);
+					paint(getGraphics());
+					drawIndex = -1;
+					state = 0;
+				}
+					
 			}
 			
 			@Override
@@ -45,6 +64,7 @@ public class Content extends JPanel {
 				if( state == 0 ){
 					
 				}else if( state == 1){
+					startPoint = e.getPoint();
 					endPoint = e.getPoint();
 				}else if( state == 2){
 					
@@ -91,12 +111,23 @@ public class Content extends JPanel {
 			public void mouseDragged(MouseEvent e) {
 				System.out.println("----drag----");
 				endPoint = e.getPoint();
+				if(drawIndex == -1){
+					if(drawType == "rectangle"){
+						Rectangle r = new Rectangle(Content.this);
+						shapes.add(r);
+						drawIndex=shapes.size()-1;
+					}
+				}else{
+					if(drawType == "rectangle"){
+						Rectangle r = new Rectangle(getThis());
+						shapes.set(drawIndex, r);
+						
+					}
+					paint(getGraphics());
+				}
 				
 			}
 		});
-		
-		
-		
 	}
 	public double getShapeWidth(){
 		return Math.abs(startPoint.getX()-endPoint.getX());
