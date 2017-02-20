@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import Shape.Rectangle;
@@ -32,8 +35,8 @@ public class Board extends JFrame {
 		btnCircle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("按下了圆");
-				
+				content.setDrawType("circle");
+				content.setState(1);
 			}
 		});
 		btns.add(btnCircle);
@@ -42,17 +45,34 @@ public class Board extends JFrame {
 		btnRect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("按下了矩形");
 				content.setDrawType("rectangle");
 				content.setState(1);
 			}
 		});
 		btns.add(btnRect);
 		
+		JButton btnLine = new JButton("直线");
+		btnRect.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				content.setDrawType("line");
+				content.setState(1);
+			}
+		});
+		btns.add(btnLine);
+		
 		
 		for(JButton btn: btns){
 			panel.add(btn);
 		}
 		this.add(panel,BorderLayout.NORTH);
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("文件");
+		JMenuItem item1 = new JMenuItem("打开");
+		menu.add(item1);
+		menuBar.add(menu);
+		this.setJMenuBar(menuBar);
+		
 	}
 }

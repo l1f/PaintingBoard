@@ -7,10 +7,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
 
+import Shape.Line;
 import Shape.Rectangle;
+import Shape.Circle;
 import Shape.Shape;
 
 public class Content extends JPanel {
@@ -19,7 +22,14 @@ public class Content extends JPanel {
 	private ArrayList<Shape> shapes = new ArrayList<>();
 	private String drawType;
 	private int drawIndex = -1;
+	private HashMap<String,Object> typeClass = new HashMap<>();
 	
+	public Point getStartPoint(){
+		return startPoint;
+	}
+	public Point getEndPoint(){
+		return endPoint;
+	}
 	public void setDrawType(String type){
 		drawType = type;
 	}
@@ -43,15 +53,16 @@ public class Content extends JPanel {
 		this.state = state;
 	}
 	public Content() {
-		this.setBackground(new Color(255, 255, 255));
-		this.addMouseListener(new MouseListener() {
+		typeClass.put("rect",Rectangle.class);
+		setBackground(new Color(255, 255, 255));
+		addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				System.out.println("----released----");
-				if( state == 1){
-					Rectangle r = new Rectangle(getThis());
-					shapes.set(drawIndex, r);
+				if( state == 1 ){
+					Shape shape = getOneShape(drawType);
+					shapes.set(drawIndex, shape);
 					paint(getGraphics());
 					drawIndex = -1;
 					state = 0;
@@ -112,22 +123,34 @@ public class Content extends JPanel {
 				System.out.println("----drag----");
 				endPoint = e.getPoint();
 				if(drawIndex == -1){
-					if(drawType == "rectangle"){
-						Rectangle r = new Rectangle(Content.this);
-						shapes.add(r);
-						drawIndex=shapes.size()-1;
-					}
+					Shape shape = getOneShape(drawType);
+					shapes.add(shape);
+					drawIndex=shapes.size()-1;
+					
 				}else{
-					if(drawType == "rectangle"){
-						Rectangle r = new Rectangle(getThis());
-						shapes.set(drawIndex, r);
-						
-					}
+					Shape shape = getOneShape(drawType);
+					shapes.set(drawIndex, shape);
+					
 					paint(getGraphics());
 				}
 				
 			}
 		});
+	}
+	
+	private Shape getOneShape(String type){
+		switch(type){
+		case "rectangle":
+			return new Rectangle(this);
+		case "circle":
+			return new Circle(this);
+		case "line":
+			return new Line(this);
+		}
+		
+		
+		return null;
+			
 	}
 	public double getShapeWidth(){
 		return Math.abs(startPoint.getX()-endPoint.getX());
