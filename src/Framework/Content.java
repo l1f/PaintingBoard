@@ -2,7 +2,9 @@ package Framework;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -40,11 +42,15 @@ public class Content extends JPanel {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		super.paintComponent(g);		
 		for ( Shape s : shapes )
 		{
 			s.draw(g);
 		}			
+	}
+	
+	public ArrayList<Shape> getShapes(){
+		return shapes;
 	}
 	public int getState(){
 		return state;

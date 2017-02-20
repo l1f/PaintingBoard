@@ -2,6 +2,7 @@ package Shape;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.function.Supplier;
 
 import Framework.Content;
 
