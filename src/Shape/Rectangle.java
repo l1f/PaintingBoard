@@ -1,5 +1,6 @@
 package Shape;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -29,7 +30,16 @@ public class Rectangle extends Shape {
 	@Override
 	public void draw(Graphics g) {
 		g.drawRect(x, y, width, height);
-		
+	}
+	@Override
+	public boolean isSelected(Point point) {
+		if(point.x >= x 
+			&& point.x <= x+width
+			&& point.y >= y
+			&& point.y <= y+height){
+				return true;
+		}
+		return false;
 	}
 
 }

@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
+import Shape.Text;
 import Shape.Line;
 import Shape.Rectangle;
 import Shape.Circle;
@@ -23,8 +24,15 @@ public class Content extends JPanel {
 	private int state; // 0 无操作 1 绘制中 2 选中编辑中
 	private ArrayList<Shape> shapes = new ArrayList<>();
 	private String drawType;
-	private int drawIndex = -1;
+	private int drawIndex = -1,editIndex = -1;
 	private HashMap<String,Object> typeClass = new HashMap<>();
+	private String textStr = "";
+	public void setTextStr(String textStr){
+		this.textStr = textStr;
+	}
+	public String getTextStr(){
+		return textStr;
+	}
 	
 	public Point getStartPoint(){
 		return startPoint;
@@ -52,6 +60,10 @@ public class Content extends JPanel {
 	public ArrayList<Shape> getShapes(){
 		return shapes;
 	}
+	public void setShapes(ArrayList<Shape> shapes){
+		this.shapes = shapes;
+		print(getGraphics());
+	}
 	public int getState(){
 		return state;
 	}
@@ -65,7 +77,7 @@ public class Content extends JPanel {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				System.out.println("----released----");
+				//System.out.println("----released----");
 				if( state == 1 ){
 					Shape shape = getOneShape(drawType);
 					shapes.set(drawIndex, shape);
@@ -87,26 +99,33 @@ public class Content extends JPanel {
 					
 				}
 				System.out.println(endPoint);
-				System.out.println("----pressed----");
+				//System.out.println("----pressed----");
 			}
 			
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("----exit----");
+				//System.out.println("----exit----");
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("----entered----");
+				//System.out.println("----entered----");
 			}
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(state == 0){	
-					
+					for(int i=0; i<shapes.size(); i++){
+						if(shapes.get( shapes.size()-i-1 ).isSelected(e.getPoint())){
+							editIndex = shapes.size()-i-1;
+							state = 2;
+							return ;
+						}
+							
+					}
 				}else if(state == 1){
 					startPoint = e.getPoint();
 				}else if(state == 2){
@@ -140,6 +159,7 @@ public class Content extends JPanel {
 					paint(getGraphics());
 				}
 				
+				
 			}
 		});
 	}
@@ -152,9 +172,9 @@ public class Content extends JPanel {
 			return new Circle(this);
 		case "line":
 			return new Line(this);
+		case "text":
+			return new Text(this,getTextStr());
 		}
-		
-		
 		return null;
 			
 	}

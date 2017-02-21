@@ -1,6 +1,7 @@
 package Shape;
 
 import java.awt.Graphics;
+import java.awt.Point;
 
 import Framework.Content;
 
@@ -25,6 +26,19 @@ public class Line extends Shape {
 	@Override
 	public void draw(Graphics g) {
 		g.drawLine(x1, y1, x2, y2);
+	}
+	@Override
+	public boolean isSelected(Point point) {
+		//System.out.println(Math.abs(1.0*(x1-point.x)/(y1-point.y) -1.0*( point.x - x2)/(point.y -y2)));
+		if( Math.abs( 1.0*(x1-point.x)/(y1-point.y) -1.0*( point.x - x2)/(point.y -y2)) < 0.2   // 线性关系在一定误差之内
+				&& ( ( x1>x2 && x1>=point.x && x2<=point.x )		// x在起止点横坐标之间
+					||( x1<x2 && x1<=point.x && x2>=point.x ) )
+				&& ( ( y1>y2 && y1>=point.y && y2<=point.y )		// y在起止点横坐标之间
+						||( y1<y2 && y1<=point.y && y2>=point.y ) )
+				
+		)
+			return true;
+		return false;
 	}
 
 }

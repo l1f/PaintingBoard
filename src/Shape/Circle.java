@@ -10,26 +10,22 @@ import Framework.Content;
 public class Circle extends Shape {
 	private int x;
 	private int y;
-	private int radius;
+	private int radiusX,radiusY;
 	
-	public Circle(int x, int y, int radius)
-	{
-		this.x = x;
-		this.y = y;
-		this.radius = radius;
-	}
 	public Circle(Content content){
 		Point point = content.getCenterPoint();
 		this.x = point.x;
 		this.y = point.y;
-		int x1 = content.getStartPoint().x;
-		int y1 = content.getStartPoint().y;
-		int x2 = content.getEndPoint().x;
-		int y2 = content.getEndPoint().y;
-		this.radius = (int) Math.sqrt( (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+		this.radiusX = (int) (content.getShapeWidth()/2);
+		this.radiusY = (int) (content.getShapeHeight()/2);
 	}
 	@Override
 	public void draw(Graphics g) {
-		g.drawOval(x-radius, y-radius, radius*2, radius*2);
+		g.drawOval(x, y, radiusX, radiusY);
+	}
+	@Override
+	public boolean isSelected(Point point) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

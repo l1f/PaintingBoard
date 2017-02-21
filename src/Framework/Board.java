@@ -5,7 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -25,6 +29,7 @@ public class Board extends JFrame {
 	private JPanel panel = new JPanel();
 	private ArrayList<JButton> btns = new ArrayList<>();
 	private Content content = new Content();
+	private String openFilePath = "";
 	
 	private Shape editShape; // 选中的编辑中的图形
 	private Shape drawShape; // 绘制中图形 鼠标按下拖动未抬起
@@ -67,6 +72,22 @@ public class Board extends JFrame {
 		});
 		btns.add(btnLine);
 		
+		JButton btnText = new JButton("文字");
+		btnText.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				content.setDrawType("text");
+				String text = JOptionPane.showInputDialog("请输入文字：");
+				if(text.trim().equals("")){
+					JOptionPane.showMessageDialog(null, "未输入文字无法绘制");
+					return ;
+				}
+				content.setTextStr(text);
+				content.setState(1);
+			}
+		});
+		btns.add(btnText);
+		
 		
 		for(JButton btn: btns){
 			panel.add(btn);
@@ -80,7 +101,21 @@ public class Board extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("打开啦");
+				JFileChooser chooser = new JFileChooser();
+				int value = chooser.showOpenDialog(null);
+				if( value == JFileChooser.APPROVE_OPTION){
+					try {
+						ObjectInputStream in = new ObjectInputStream(
+							new FileInputStream(chooser.getSelectedFile()));
+						content.setShapes((ArrayList<Shape>) in.readObject());
+						
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					chooser.getSelectedFile();
+				}
+				
 				
 			}
 		});
@@ -102,6 +137,8 @@ public class Board extends JFrame {
 						out.flush();
 						out.close();
 						JOptionPane.showMessageDialog(null, "保存成功");
+						openFilePath = path;
+						flushTitle();
 					} catch (Exception e1) {
 						System.out.println("write failed");
 			            e1.printStackTrace();
@@ -113,5 +150,9 @@ public class Board extends JFrame {
 		menuBar.add(menuFile);
 		this.setJMenuBar(menuBar);
 		setVisible(true);
+	}
+	
+	private void flushTitle(){
+		setTitle("绘图板[" + openFilePath + "]");
 	}
 }
