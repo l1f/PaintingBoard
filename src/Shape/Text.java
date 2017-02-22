@@ -19,7 +19,6 @@ public class Text extends Shape {
 	}
 	@Override
 	public boolean isSelected(Point point) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

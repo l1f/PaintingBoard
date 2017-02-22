@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 import Framework.Content;
 
 public abstract class Shape implements java.io.Serializable{
-	private Color color = new Color(0);
+	private Color color = new Color(0xffffff);
 	
 	public abstract void draw(Graphics g);
 	public abstract boolean isSelected(Point point);
@@ -19,6 +19,10 @@ public abstract class Shape implements java.io.Serializable{
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public String toString(){
+		return getClass().getName();
 	}
 	
 	

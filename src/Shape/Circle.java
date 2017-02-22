@@ -1,5 +1,6 @@
 package Shape;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.function.Supplier;
@@ -21,11 +22,16 @@ public class Circle extends Shape {
 	}
 	@Override
 	public void draw(Graphics g) {
+		g.setColor(getColor());
+		g.fillOval(x, y, radiusX, radiusY);
+		g.setColor(new Color(0));
 		g.drawOval(x, y, radiusX, radiusY);
 	}
 	@Override
 	public boolean isSelected(Point point) {
-		// TODO Auto-generated method stub
-		return false;
+		int x = point.x;
+		int y = point.y;
+		
+		return 1.0*(x*x)/(radiusX*radiusX)+1.0*(y*y)/(radiusY*radiusY)<=1;
 	}
 }

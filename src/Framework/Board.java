@@ -1,6 +1,7 @@
 package Framework;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedOutputStream;
@@ -34,6 +35,7 @@ public class Board extends JFrame {
 	private Shape editShape; // 选中的编辑中的图形
 	private Shape drawShape; // 绘制中图形 鼠标按下拖动未抬起
 	
+	private JMenu menuInfo; // 用于现实提示内容
 	public Board(int width,int height) {
 		this.setTitle("绘图板");
 		this.setVisible(true);
@@ -115,8 +117,6 @@ public class Board extends JFrame {
 					}
 					chooser.getSelectedFile();
 				}
-				
-				
 			}
 		});
 		menuFile.add(menuItemOpen);
@@ -147,11 +147,33 @@ public class Board extends JFrame {
 			}
 		});
 		menuFile.add(menuItemSave);
+		
+		JMenu menuColor = new JMenu("设置颜色");
+		JMenuItem itemRed = new JMenuItem("红色");
+		itemRed.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setColor(Color.RED);
+			}
+		});
+		menuColor.add(itemRed);
+		
 		menuBar.add(menuFile);
+		menuBar.add(menuColor);
+		
+		
+		menuInfo = new JMenu("");
+		menuBar.add(menuInfo);
 		this.setJMenuBar(menuBar);
 		setVisible(true);
 	}
 	
+	public void print(String info){
+		menuInfo.setText(info);
+	}
+	private void setColor(Color color){
+		content.setColor(color);
+	}
 	private void flushTitle(){
 		setTitle("绘图板[" + openFilePath + "]");
 	}

@@ -70,6 +70,12 @@ public class Content extends JPanel {
 	public void setState(int state){
 		this.state = state;
 	}
+	public void setColor(Color color){
+		if(editIndex != -1){
+			shapes.get(editIndex).setColor(color);
+			paint(getGraphics());
+		}
+	}
 	public Content() {
 		typeClass.put("rect",Rectangle.class);
 		setBackground(new Color(255, 255, 255));
@@ -121,6 +127,7 @@ public class Content extends JPanel {
 					for(int i=0; i<shapes.size(); i++){
 						if(shapes.get( shapes.size()-i-1 ).isSelected(e.getPoint())){
 							editIndex = shapes.size()-i-1;
+							System.out.println(shapes.get(editIndex));
 							state = 2;
 							return ;
 						}
